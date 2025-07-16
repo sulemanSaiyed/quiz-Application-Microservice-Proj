@@ -2,6 +2,7 @@ package com.denzil.quiz.controller;
 
 import com.denzil.quiz.model.Question;
 import com.denzil.quiz.model.QuestionWrapper;
+import com.denzil.quiz.model.Response;
 import com.denzil.quiz.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,5 +24,10 @@ return quizService.createQuiz(category,numQ, title);
     }
     public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(@PathVariable Integer id) {
 return quizService.getQuizQuestion(id);
+    }
+    @PostMapping("submit/{id}")
+    public ResponseEntity<Integer>submitQuiz(@PathVariable Integer id, @RequestBody List<Response>responses) {
+        return  quizService.calculateResult(id, responses);
+
     }
 }

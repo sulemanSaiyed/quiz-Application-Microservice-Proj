@@ -5,6 +5,7 @@ import com.denzil.quiz.dao.QuizDao;
 import com.denzil.quiz.model.Question;
 import com.denzil.quiz.model.QuestionWrapper;
 import com.denzil.quiz.model.Quiz;
+import com.denzil.quiz.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,5 +42,23 @@ public class QuizService {
 
        }
        return  new ResponseEntity<>(questionForUser,HttpStatus.OK);
+    }
+
+    public ResponseEntity<Integer> calculateResult(Integer id, List<Response> responses) {
+    Quiz quiz = quizDao.findById(id).get();
+    List<Question> questions = quiz.getQuestions();
+    int correct = 0;
+    int i =0;
+    for (Response r : responses) {
+        if(r.getResponse().equals(questions.get(i).getRightAnswer())) {
+         correct++;}
+               i++;
+
+    }
+
+
+        return  new ResponseEntity<>(correct,HttpStatus.OK);
+
+
     }
 }
