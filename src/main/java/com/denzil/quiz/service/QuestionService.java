@@ -1,6 +1,6 @@
 package com.denzil.quiz.service;
 
-import com.denzil.quiz.Question;
+import com.denzil.quiz.model.Question;
 import com.denzil.quiz.dao.QuestionDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,7 @@ public class QuestionService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
        }
 
-    public ResponseEntity< List<Question>> getAllQuestion(String category){
+    public ResponseEntity< List<Question>> getQuestionByCategory (String category){
         try{
             return new ResponseEntity<>(questionDao.findByCategory(category), HttpStatus.OK ) ;
         } catch (Exception e) {
