@@ -2,6 +2,8 @@ package com.denzil.question_service.service;
 
 import com.denzil.question_service.dao.QuestionDao;
 import com.denzil.question_service.model.Question;
+import com.denzil.question_service.model.QuestionWrapper;
+import com.denzil.question_service.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,5 +41,58 @@ public class QuestionService {
     public ResponseEntity<String >addQuestion(Question question) {
      questionDao.save(question);
      return new ResponseEntity<>("sucess", HttpStatus.OK) ;
+    }
+
+    public ResponseEntity<List<Integer>> getQuestionForQuiz(String categoryName, Integer numberOfQuestions) {
+
+
+   List<Integer> questions = questionDao.findRandomQuestionByCategory(categoryName, numberOfQuestions);
+
+
+return  new ResponseEntity<>(questions, HttpStatus.OK) ;
+
+    }
+
+    public ResponseEntity<List<QuestionWrapper>> getQuestionsfromId(List<Integer> ids) {
+
+        List<QuestionWrapper>questionWrappers=new ArrayList<>();
+        List<Question> questions=new ArrayList<>();
+     for(Integer id: ids) {
+         questions.add(questionDao.findById(id).get());
+
+
+     }
+     for( Question question: questions) {
+         QuestionWrapper questionWrapper= new QuestionWrapper();
+         questionWrapper.setId(question.getId());
+         questionWrapper.setQuestionTitle(question.getQuestionTitle());
+         questionWrapper.setOption1(question.getOption1());
+         questionWrapper.setOption2(question.getOption2());
+         questionWrapper.setOption3(question.getOption3());
+         questionWrapper.setOption4(question.getOption4());
+         questionWrappers.add(questionWrapper);
+
+     }
+
+        return new ResponseEntity<>(questionWrappers, HttpStatus.OK) ;
+    }
+
+    public ResponseEntity<Integer> getScore(List<Response> responses) {
+
+
+
+        int correct = 0;
+
+        for (Response r : responses) {
+            Question question = questionDao.findById(r.getId()).get();
+            if(r.getResponse().equals(question.getRightAnswer())) {
+                correct++;}
+
+        }
+
+
+        return  new ResponseEntity<>(correct,HttpStatus.OK);
+
+
     }
 }
