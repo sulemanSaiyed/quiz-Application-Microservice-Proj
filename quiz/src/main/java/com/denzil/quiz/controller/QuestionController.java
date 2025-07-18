@@ -1,4 +1,4 @@
-package com.denzil.quiz.controller;
+package com.denzil.quiz_service.controller;
 
 import com.denzil.quiz.model.Question;
 

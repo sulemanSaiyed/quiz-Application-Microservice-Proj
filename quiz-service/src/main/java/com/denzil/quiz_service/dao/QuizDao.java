@@ -1,6 +1,6 @@
-package com.denzil.quiz.dao;
+package com.denzil.quiz_service.dao;
 
-import com.denzil.quiz.model.Quiz;
+import com.denzil.quiz_service.model.Quiz;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
