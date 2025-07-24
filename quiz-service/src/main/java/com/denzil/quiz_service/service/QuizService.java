@@ -2,7 +2,7 @@ package com.denzil.quiz_service.service;
 import com.denzil.quiz_service.feign.QuizInterface;
 import com.denzil.quiz_service.model.QuizDto;
 import com.denzil.quiz_service.dao.QuizDao;
-import com.denzil.quiz_service.model.Question;
+
 import com.denzil.quiz_service.model.QuestionWrapper;
 import com.denzil.quiz_service.model.Quiz;
 import com.denzil.quiz_service.model.Response;
@@ -35,31 +35,18 @@ QuizInterface quizInterface;
 
 
     public ResponseEntity<List<QuestionWrapper>> getQuizQuestion(Integer id) {
-//       Optional<Quiz> quiz= quizDao.findById(id);
-//       List<Question> questionFromDb= quiz.get().getQuestions();
-       List<QuestionWrapper> questionForUser= new ArrayList<>();
-//       for (Question pp : questionFromDb) {
-//           QuestionWrapper qw= new QuestionWrapper(pp.getId(), pp.getQuestionTitle(),pp.getOption1(), pp.getOption2(), pp.getOption3(),pp.getOption4());
-//           questionForUser.add(qw);
+       Quiz  quiz= quizDao.findById(id).get();
+List<Integer> questionIds = quiz.getQuestionIds();
 
-       }
-       return  new ResponseEntity<>(questionForUser,HttpStatus.OK);
+ResponseEntity<List<QuestionWrapper>>questionsss=quizInterface.getAllQuestionsFromId(questionIds);
+       return  questionsss;
     }
 
     public ResponseEntity<Integer> calculateResult(Integer id, List<Response> responses) {
-//    Quiz quiz = quizDao.findById(id).get();
-//    List<Question> questions = quiz.getQuestions();
-//    int correct = 0;
-   int i =0;
-//    for (Response r : responses) {
-//        if(r.getResponse().equals(questions.get(i).getRightAnswer())) {
-//         correct++;}
-//               i++;
-
-    }
+ResponseEntity<Integer>score=quizInterface.getScores(responses);
 
 
-        return  new ResponseEntity<>(correct,HttpStatus.OK);
+        return score;
 
 
     }
